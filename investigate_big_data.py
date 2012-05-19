@@ -9,8 +9,8 @@ data = []
 reader = csv.reader(open(sys.argv[1]))
 headers = reader.next()
 
-header_uniques = dict([header,set() for header in headers])
-header_empties = dict([header,0 for header in headers])
+header_uniques = dict([(header,set()) for header in headers])
+header_empties = dict([(header,0) for header in headers])
 
 num_rows = 0
 
