@@ -18,7 +18,7 @@ for row in reader:
   row_len = len(row)
   for ind,header in enumerate(headers):
     val = row[ind] if row_len > ind else None
-    if val is not None:
+    if val:
       header_uniques[header].add(val)
     else:
       header_empties[header] += 1
