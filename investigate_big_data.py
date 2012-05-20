@@ -7,7 +7,7 @@ if len(sys.argv) != 2:
 
 data = []
 csv.field_size_limit(1000000000)
-reader = csv.reader(open(sys.argv[1]))
+reader = csv.excel(open(sys.argv[1]))
 headers = reader.next()
 
 header_uniques = dict([(header,set()) for header in headers])
