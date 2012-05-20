@@ -5,17 +5,23 @@ if len(sys.argv) != 2:
   print "Usage: python investigate_big_data.py <csv filename>"
   sys.exit(0)
 
-data = []
-csv.field_size_limit(1000000000)
-reader = csv.reader(open(sys.argv[1]), dialect='excel')
-headers = reader.next()
+# csv.field_size_limit(1000000000)
+# reader = csv.reader(open(sys.argv[1]), dialect='excel')
+# headers = reader.next()
+
+data_file = open(sys.argv[1])
+headers = data_file.readline()
+headers = headers.rstrip()
+headers = headers.split()
 
 header_uniques = dict([(header,set()) for header in headers])
 header_empties = dict([(header,0) for header in headers])
 
+data = []
 num_rows = 0
 
-for row in reader:
+# for row in reader:
+for row in data_file.xreadlines():
   row_len = len(row)
   for ind,header in enumerate(headers):
     val = row[ind] if row_len > ind else None
@@ -27,6 +33,8 @@ for row in reader:
   num_rows += 1
   if num_rows % 100000 == 0:
     print "Processed %d rows" %num_rows
+    
+data_file.close()
   
 print "Read %d rows of data" %num_rows
 print "Here are the headers:\n%s" %str(headers)
