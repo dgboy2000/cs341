@@ -6,6 +6,7 @@ if len(sys.argv) != 2:
   sys.exit(0)
 
 data = []
+csv.field_size_limit(1000000000)
 reader = csv.reader(open(sys.argv[1]))
 headers = reader.next()
 
