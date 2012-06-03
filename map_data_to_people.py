@@ -40,7 +40,10 @@ for row in reader:
   
   # part = row[part_ind]
   # test = row[test_ind]
-  person = row[person_ind]
+  try:
+    person = row[person_ind]
+  except:
+    import pdb;pdb.set_trace()
   # time = datetime.strptime(row[time_ind], '%m/%d/%y %H:%M') # change format: '2012-04-20 07:17:11.647'
   
   if person not in person_to_writer:
