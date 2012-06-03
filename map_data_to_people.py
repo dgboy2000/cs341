@@ -36,12 +36,12 @@ data = {}
 person_to_writer = {}
 
 for row in reader:
-  row_len = len(row)
+  # row_len = len(row)
   
-  part = row[part_ind]
-  test = row[test_ind]
+  # part = row[part_ind]
+  # test = row[test_ind]
   person = row[person_ind]
-  time = datetime.strptime(row[time_ind], '%m/%d/%y %H:%M')
+  # time = datetime.strptime(row[time_ind], '%m/%d/%y %H:%M') # change format: '2012-04-20 07:17:11.647'
   
   if person not in person_to_writer:
     person_to_writer[person] = csv.writer(open(os.path.join(target_dir, person.translate(None, ' '))))
