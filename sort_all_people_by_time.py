@@ -18,24 +18,13 @@ print "Sorting all rows in all files in %s by test date" %(people_dir)
 data = []
 csv.field_size_limit(1000000000)
 
-header_filename = 'flextronics_processed.csv'
-try:
-  headers = csv.reader(open(header_filename)).next()
-  num_headers = len(headers)
-except:
-  print "Couldn't extact headers from %s" %header_filename
-  sys.exit(0)
-
-time_ind = headers.index('Test Date')
-
 for filename in os.listdir(people_dir):
   person_filename = os.path.join(people_dir, filename)
   person_file = open(person_filename)
+  
   reader = csv.reader(person_file)
-  num_rows = 0
-
-  data = {}
-  person_to_writer = {}
+  headers = reader.next()
+  time_ind = headers.index('Test Date')
 
   all_rows = [row for row in reader]
   print "Read in %d rows for %s" %(len(all_rows), filename)
@@ -44,6 +33,7 @@ for filename in os.listdir(people_dir):
   person_file.close()
   
   writer = csv.writer(open(person_filename, 'w'))
+  writer.writerow(headers)
   for row in all_rows:
     writer.writerow(row)
   print "Wrote all rows back to disk"
