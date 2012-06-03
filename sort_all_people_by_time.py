@@ -8,7 +8,7 @@ if len(sys.argv) != 2:
   sys.exit(0)
   
 
-people_dir = sys.argv[2]
+people_dir = sys.argv[1]
 if not os.path.exists(people_dir):
   print "ERROR: directory '%s' doesn't exist" %people_dir
   sys.exit(0)
