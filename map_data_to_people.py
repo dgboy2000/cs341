@@ -16,12 +16,15 @@ if not os.path.exists(target_dir):
 
 data = []
 csv.field_size_limit(1000000000)
+
+header_filename = 'flextronics_processed.csv'
+try:
+  headers = csv.reader(open(header_filename)).next()
+except:
+  print "Couldn't extact headers from %s" %header_filename
+  sys.exit(0)
+
 reader = csv.reader(open(data_filename))
-headers = reader.next()
-
-header_uniques = dict([(header,set()) for header in headers])
-header_empties = dict([(header,0) for header in headers])
-
 num_rows = 0
 
 part_ind = headers.index('PartNumber')
