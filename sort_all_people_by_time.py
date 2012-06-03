@@ -33,7 +33,7 @@ for filename in os.listdir(people_dir):
   person_file.close()
   
   person_file = open(person_filename, 'w')
-  writer = csv.writer(person_filename)
+  writer = csv.writer(person_file)
   writer.writerow(headers)
   for row in all_rows:
     writer.writerow(row)
