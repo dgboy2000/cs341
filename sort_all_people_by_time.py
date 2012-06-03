@@ -26,18 +26,20 @@ for filename in os.listdir(people_dir):
   headers = reader.next()
   time_ind = headers.index('Test Date')
 
-  import pdb;pdb.set_trace()
   all_rows = [row for row in reader]
   print "Read in %d rows for %s" %(len(all_rows), filename)
   all_rows.sort(key = lambda row: row[time_ind])
   print "Sorted rows by time"
   person_file.close()
   
-  writer = csv.writer(open(person_filename, 'w'))
+  person_file = open(person_filename, 'w')
+  writer = csv.writer(person_filename)
   writer.writerow(headers)
   for row in all_rows:
     writer.writerow(row)
+  person_file.close()
   print "Wrote all rows back to disk"
+  
   
 
 
