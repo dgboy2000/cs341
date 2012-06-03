@@ -20,12 +20,14 @@ csv.field_size_limit(1000000000)
 header_filename = 'flextronics_processed.csv'
 try:
   headers = csv.reader(open(header_filename)).next()
+  num_headers = len(headers)
 except:
   print "Couldn't extact headers from %s" %header_filename
   sys.exit(0)
 
 reader = csv.reader(open(data_filename))
 num_rows = 0
+num_bogus_rows = 0
 
 part_ind = headers.index('PartNumber')
 test_ind = headers.index('TestStation')
@@ -36,7 +38,10 @@ data = {}
 person_to_writer = {}
 
 for row in reader:
-  # row_len = len(row)
+  row_len = len(row)
+  if row_len < num_headers:
+    num_bogus_rows += 1
+    continue
   
   # part = row[part_ind]
   # test = row[test_ind]
