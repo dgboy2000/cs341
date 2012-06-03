@@ -44,7 +44,7 @@ for row in reader:
   # time = datetime.strptime(row[time_ind], '%m/%d/%y %H:%M') # change format: '2012-04-20 07:17:11.647'
   
   if person not in person_to_writer:
-    person_to_writer[person] = csv.writer(open(os.path.join(target_dir, person.translate(None, ' '))))
+    person_to_writer[person] = csv.writer(open(os.path.join(target_dir, person.translate(None, ' ')), 'w'))
     person_to_writer[person].writerow(headers)
   
   person_to_writer[person].writerow(row)
