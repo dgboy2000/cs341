@@ -39,7 +39,7 @@ for filename in os.listdir(people_dir):
   for row in reader:
     num_rows += 1
     station = row[station_ind]
-    time = datetime.strptime(row[time_ind], '%y-%m-%d %H:%M:%S')
+    time = datetime.strptime(row[time_ind], '%Y-%m-%d %H:%M:%S.%f')
     if station == last_station and time.date() == last_time.date():
       station_total_times[station] += (time - last_time).total_seconds()
       station_num_jobs[station] += 1
