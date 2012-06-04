@@ -14,7 +14,7 @@ if not os.path.exists(people_dir):
   print "ERROR: directory '%s' doesn't exist" %people_dir
   sys.exit(0)
 
-print "Estimating the times of each test station" %(people_dir)
+print "Estimating the times of each test station from personnel jobs in %s" %(people_dir)
 
 data = []
 csv.field_size_limit(1000000000)
