@@ -53,7 +53,7 @@ for filename in os.listdir(people_dir):
 
 print "Here are the average times per station:"
 for station,total_time in station_total_times.iteritems():
-  print "%s: %f" %(station, total_time / station_num_jobs[station])
+  print "%s: %f seconds based on %d jobs" %(station, total_time / station_num_jobs[station])
   
   
 
