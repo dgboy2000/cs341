@@ -21,18 +21,21 @@ data = []
 num_rows = 0
 
 # for row in reader:
-for row in data_file.xreadlines():
-  row_len = len(row)
-  for ind,header in enumerate(headers):
-    val = row[ind] if row_len > ind else None
-    if val:
-      header_uniques[header].add(val)
-    else:
-      header_empties[header] += 1
+try:
+  for row in data_file.xreadlines():
+    row_len = len(row)
+    for ind,header in enumerate(headers):
+      val = row[ind] if row_len > ind else None
+      if val:
+        header_uniques[header].add(val)
+      else:
+        header_empties[header] += 1
       
-  num_rows += 1
-  if num_rows % 100000 == 0:
-    print "Processed %d rows" %num_rows
+    num_rows += 1
+    if num_rows % 100000 == 0:
+      print "Processed %d rows" %num_rows
+except:
+  print "Error after processing %d rows; moving on" %num_rows
     
 data_file.close()
   
