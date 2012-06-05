@@ -9,23 +9,36 @@ if len(sys.argv) != 2:
 # reader = csv.reader(open(sys.argv[1]), dialect='excel')
 # headers = reader.next()
 
-data_file = open(sys.argv[1])
-headers = data_file.readline()
-headers = headers.rstrip()
-headers = headers.split()
+def load_headers():
+  header_filename = 'flextronics_processed.csv'
+  try:
+    headers = csv.reader(open(header_filename)).next()
+    num_headers = len(headers)
+    return headers
+  except:
+    print "Couldn't extact headers from %s" %header_filename
+    sys.exit(0)
 
+reader = csv.reader(open(sys.argv[1]))
+
+headers = load_headers()
 header_uniques = dict([(header,set()) for header in headers])
 header_empties = dict([(header,0) for header in headers])
 
 data = []
 num_rows = 0
+num_bad_rows = 0
+num_headers = len(headers)
 
 # for row in reader:
 try:
-  for row in data_file.xreadlines():
-    row_len = len(row)
+  for row in reader:
+    if len(row) < num_headers:
+      num_bad_rows += 1
+      continue
+
     for ind,header in enumerate(headers):
-      val = row[ind] if row_len > ind else None
+      val = row[ind]
       if val:
         header_uniques[header].add(val)
       else:
@@ -35,9 +48,7 @@ try:
     if num_rows % 100000 == 0:
       print "Processed %d rows" %num_rows
 except:
-  print "Error after processing %d rows; moving on" %num_rows
-    
-data_file.close()
+  print "Error after processing %d rows with %d bad rows; moving on" %(num_rows, num_bad_rows)
   
 print "Read %d rows of data" %num_rows
 print "Here are the headers:\n%s" %str(headers)
