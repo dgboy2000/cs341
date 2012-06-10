@@ -45,7 +45,7 @@ for row in reader:
   part = row[part_ind]
   if part not in part_to_person_counter:
     part_to_person_counter[part] = Counter()
-  part_person_counter = part_person_counter[part]
+  part_person_counter = part_to_person_counter[part]
 
   person = row[person_ind]
   person_counter[person] += 1
