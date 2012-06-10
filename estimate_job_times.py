@@ -23,11 +23,15 @@ csv.field_size_limit(1000000000)
 station_total_times = Counter()
 station_num_jobs = Counter()
 
-writer = csv.writer(open(output_file, 'w'))
+out_headers = ['EmpName', 'TestStation', 'PartNumber', 'NumJobs', 'TotalSecs', 'TotalSecsSq']
+employee_station_part_info = {}
 
-for filename in os.listdir(people_dir):
-  person_filename = os.path.join(people_dir, filename)
+for person in os.listdir(people_dir):
+  person_filename = os.path.join(people_dir, person)
   person_file = open(person_filename)
+  
+  employee_station_part_info[person] = {}
+  station_part_info = employee_station_part_info[person]
   
   reader = csv.reader(person_file)
   headers = reader.next()
@@ -44,13 +48,26 @@ for filename in os.listdir(people_dir):
   last_time = None
   for row in reader:
     num_rows += 1
+    
     master_id = row[master_id_ind]
     station = row[station_ind]
     part = row[part_ind]
     time = datetime.strptime(row[time_ind], '%Y-%m-%d %H:%M:%S.%f')
-    if (station == last_station or master_id == last_master_id) and time.date() == last_time.date():
-      station_total_times[station] += (time - last_time).total_seconds()
+    
+    if (station == last_station) and time.date() == last_time.date():
+      secs = (time - last_time).total_seconds()
+      station_total_times[station] += secs
       station_num_jobs[station] += 1
+      
+      if station not in station_part_info:
+        station_part_info[station] = {}
+      part_info = station_part_info[station]
+      if part not in part_info:
+        part_info[part] = {'NumJobs':0, 'TotalSecs':0.0, 'TotalSecsSq':0.0}
+      info = part_info[part]
+      info['NumJobs'] += 1
+      info['TotalSecs'] += secs
+      info['TotalSecsSq'] += secs ** 2
     else:
       num_ignored_jobs += 1
     
@@ -65,8 +82,14 @@ for station,total_time in station_total_times.iteritems():
   num_jobs = station_num_jobs[station]
   print "%s: %f seconds based on %d jobs" %(station, total_time / num_jobs, num_jobs)
   
-  
-
+print "Writing data to %s..." %output_file,
+writer = csv.writer(open(output_file, 'w'))
+writer.writerow(out_headers)
+for person,station_part_info in employee_station_part_info.iteritems():
+  for station,part_info in station_part_info:
+    for part,info in part_info:
+      writer.writerow([person, station, part, info['NumJobs'], info['TotalSecs'], info['TotalSecsSq']])
+print "Done"
 
 
 
