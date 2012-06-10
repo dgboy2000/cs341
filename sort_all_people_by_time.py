@@ -4,7 +4,7 @@ import os
 import sys
 
 if len(sys.argv) != 2:
-  print "Usage: python map_data_to_people.py <people_dir>"
+  print "Usage: python sort_all_people_by_time.py <people_dir>"
   sys.exit(0)
   
 
