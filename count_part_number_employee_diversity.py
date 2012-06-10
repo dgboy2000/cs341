@@ -50,7 +50,7 @@ for row in reader:
   if person not in person_to_stations:
     person_to_stations[person] = set()
   
-  person_to_stations.add(station)
+  person_to_stations[person].add(station)
   person_counter[person] += 1
   part_person_counter[person] += 1
 
