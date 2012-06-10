@@ -66,7 +66,7 @@ for station,person_counter in station_to_person_counter.iteritems():
     print "%s: %s (%d jobs)" %(station, person, job_count)
 
 print "Number of stations per employee:"
-for person,stations in person_to_stations:
+for person,stations in person_to_stations.iteritems():
   print "%s: %d" %(person, len(stations))
 
 print "Number of employees per station:"
