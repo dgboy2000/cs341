@@ -22,8 +22,9 @@ csv.field_size_limit(1000000000)
 station_to_person_counter = {}
 station_to_part_to_person_counter = {}
 
-reader = csv.reader(data_file)
+reader = csv.reader(open(data_file))
 headers = reader.next()
+print "Headers are:\n%s" %"\n".join(headers)
 
 part_ind = headers.index('PartNumber')
 person_ind = headers.index('EmpName')
