@@ -17,15 +17,10 @@ if not os.path.exists(target_dir):
 data = []
 csv.field_size_limit(1000000000)
 
-header_filename = 'flextronics_processed.csv'
-try:
-  headers = csv.reader(open(header_filename)).next()
-  num_headers = len(headers)
-except:
-  print "Couldn't extact headers from %s" %header_filename
-  sys.exit(0)
-
 reader = csv.reader(open(data_filename))
+headers = reader.next()
+
+num_headers = len(headers)
 num_rows = 0
 num_bogus_rows = 0
 
