@@ -76,7 +76,7 @@ for station,person_counter in station_to_person_counter.iteritems():
 print "Here are the Herfindahl indices for each station:"
 for station,person_counter in station_to_person_counter.iteritems():
   num_jobs = sum(person_counter.values())
-  hi = sum([cnt**2 for cnt in person_counter.iterkeys()]) / float(num_jobs ** 2)
+  hi = sum([cnt**2 for cnt in person_counter.itervalues()]) / float(num_jobs ** 2)
   print "%s: %f" %(station, hi)
   
 
