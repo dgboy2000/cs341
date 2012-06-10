@@ -22,6 +22,7 @@ csv.field_size_limit(1000000000)
 station_to_person_counter = {}
 station_to_part_to_person_counter = {}
 person_to_stations = {}
+person_to_parts = {}
 
 reader = csv.reader(open(data_file))
 headers = reader.next()
@@ -49,8 +50,10 @@ for row in reader:
   person = row[person_ind]
   if person not in person_to_stations:
     person_to_stations[person] = set()
+    person_to_parts[person] = set()
   
   person_to_stations[person].add(station)
+  person_to_parts[person].add(part)
   person_counter[person] += 1
   part_person_counter[person] += 1
 
@@ -68,6 +71,10 @@ for station,person_counter in station_to_person_counter.iteritems():
 print "Number of stations per employee:"
 for person,stations in person_to_stations.iteritems():
   print "%s: %d" %(person, len(stations))
+  
+print "Number of parts per employee:"
+for person,parts in person_to_stations.iteritems():
+  print "%s: %d" %(person, len(parts))
 
 print "Number of employees per station:"
 for station,person_counter in station_to_person_counter.iteritems():
@@ -79,7 +86,9 @@ for station,person_counter in station_to_person_counter.iteritems():
   hi = sum([cnt**2 for cnt in person_counter.itervalues()]) / float(num_jobs ** 2)
   print "%s: %f" %(station, hi)
   
-
+for station,part_to_person in station_to_part_to_person_counter.iteritems():
+  for part,person_counter in part_to_person.iteritems():
+    print "%d people worked on '%s' at '%s'" %(len(person_counter), part, station)
 
 
 
