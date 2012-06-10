@@ -63,24 +63,24 @@ for row in reader:
   
 print "Read in %d rows for %s" %(num_rows, data_file)
 
-print "Here are the employee job counts per station:"
+print "\n\nHere are the employee job counts per station:"
 for station,person_counter in station_to_person_counter.iteritems():
   for person,job_count in person_counter.iteritems():
     print "%s: %s (%d jobs)" %(station, person, job_count)
 
-print "Number of stations per employee:"
+print "\n\nNumber of stations per employee:"
 for person,stations in person_to_stations.iteritems():
   print "%s: %d" %(person, len(stations))
   
-print "Number of parts per employee:"
+print "\n\nNumber of parts per employee:"
 for person,parts in person_to_stations.iteritems():
   print "%s: %d" %(person, len(parts))
 
-print "Number of employees per station:"
+print "\n\nNumber of employees per station:"
 for station,person_counter in station_to_person_counter.iteritems():
   print "%s: %d" %(station,len(person_counter))
 
-print "Here are the Herfindahl indices for each station:"
+print "\n\nHere are the Herfindahl indices for each station:"
 for station,person_counter in station_to_person_counter.iteritems():
   num_jobs = sum(person_counter.values())
   hi = sum([cnt**2 for cnt in person_counter.itervalues()]) / float(num_jobs ** 2)
