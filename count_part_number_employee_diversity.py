@@ -21,6 +21,7 @@ csv.field_size_limit(1000000000)
 
 station_to_person_counter = {}
 station_to_part_to_person_counter = {}
+person_to_stations = {}
 
 reader = csv.reader(open(data_file))
 headers = reader.next()
@@ -33,8 +34,6 @@ station_ind = headers.index('TestStation')
 num_rows = 0
 
 for row in reader:
-  num_rows += 1
-
   station = row[station_ind]
   if station not in station_to_person_counter:
     station_to_person_counter[station] = Counter()
@@ -48,6 +47,10 @@ for row in reader:
   part_person_counter = part_to_person_counter[part]
 
   person = row[person_ind]
+  if person not in person_to_stations:
+    person_to_stations[person] = set()
+  
+  person_to_stations.add(station)
   person_counter[person] += 1
   part_person_counter[person] += 1
 
@@ -62,9 +65,17 @@ for station,person_counter in station_to_person_counter.iteritems():
   for person,job_count in person_counter.iteritems():
     print "%s: %s (%d jobs)" %(station, person, job_count)
 
+print "Number of stations per employee:"
+for person,stations in person_to_stations:
+  print "%s: %d" %(person, len(stations))
+
+print "Number of employees per station:"
+for station,person_counter in station_to_person_counter.iteritems():
+  print "%s: %d" %(station,len(person_counter))
+
 print "Here are the Herfindahl indices for each station:"
 for station,person_counter in station_to_person_counter.iteritems():
-  num_jobs = sum(person_counter.keys())
+  num_jobs = sum(person_counter.values())
   hi = sum([cnt**2 for cnt in person_counter.iterkeys()]) / float(num_jobs ** 2)
   print "%s: %f" %(station, hi)
   
