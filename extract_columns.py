@@ -41,7 +41,8 @@ for row in reader:
     num_bogus_rows += 1
     continue
     
-  writer.writerow(row)
+  filtered_row = [row[ind] for ind in inds_to_extract]
+  writer.writerow(filtered_row)
       
   num_rows += 1
   if num_rows % 100000 == 0:
