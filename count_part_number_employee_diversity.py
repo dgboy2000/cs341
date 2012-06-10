@@ -86,6 +86,7 @@ for station,person_counter in station_to_person_counter.iteritems():
   hi = sum([cnt**2 for cnt in person_counter.itervalues()]) / float(num_jobs ** 2)
   print "%s: %f" %(station, hi)
   
+print "\n\nEmployee counts per station/part number:"
 for station,part_to_person in station_to_part_to_person_counter.iteritems():
   for part,person_counter in part_to_person.iteritems():
     print "%d people worked on '%s' at '%s'" %(len(person_counter), part, station)

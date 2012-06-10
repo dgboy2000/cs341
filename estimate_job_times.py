@@ -4,17 +4,18 @@ from datetime import datetime
 import os
 import sys
 
-if len(sys.argv) != 2:
-  print "Usage: python estimate_job_times.py <people_dir>"
+if len(sys.argv) != 3:
+  print "Usage: python estimate_job_times.py <people_dir> <output_file>"
   sys.exit(0)
   
 
 people_dir = sys.argv[1]
+output_file = sys.argv[2]
 if not os.path.exists(people_dir):
   print "ERROR: directory '%s' doesn't exist" %people_dir
   sys.exit(0)
 
-print "Estimating the times of each test station from personnel jobs in %s" %(people_dir)
+print "Estimating the times of each test station from personnel jobs in %s and writing data to %s" %(people_dir, output_file)
 
 data = []
 csv.field_size_limit(1000000000)
@@ -22,30 +23,38 @@ csv.field_size_limit(1000000000)
 station_total_times = Counter()
 station_num_jobs = Counter()
 
+writer = csv.writer(open(output_file, 'w'))
+
 for filename in os.listdir(people_dir):
   person_filename = os.path.join(people_dir, filename)
   person_file = open(person_filename)
   
   reader = csv.reader(person_file)
   headers = reader.next()
+  master_id_ind = headers.index('Master Id')
   station_ind = headers.index('TestStation')
+  part_ind = headers.index('PartNumber')
   time_ind = headers.index('Test Date')
   
   num_rows = 0
   num_ignored_jobs = 0
 
+  last_master_id = None
   last_station = None
   last_time = None
   for row in reader:
     num_rows += 1
+    master_id = row[master_id_ind]
     station = row[station_ind]
+    part = row[part_ind]
     time = datetime.strptime(row[time_ind], '%Y-%m-%d %H:%M:%S.%f')
-    if station == last_station and time.date() == last_time.date():
+    if (station == last_station or master_id == last_master_id) and time.date() == last_time.date():
       station_total_times[station] += (time - last_time).total_seconds()
       station_num_jobs[station] += 1
     else:
       num_ignored_jobs += 1
     
+    last_master_id = master_id
     last_station = station
     last_time = time
     
