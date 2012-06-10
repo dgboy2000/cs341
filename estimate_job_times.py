@@ -75,7 +75,7 @@ for person in os.listdir(people_dir):
     last_station = station
     last_time = time
     
-  print "Read in %d rows for %s and ignored %d jobs" %(num_rows, filename, num_ignored_jobs)
+  print "Read in %d rows for %s and ignored %d jobs" %(num_rows, person, num_ignored_jobs)
 
 print "Here are the average times per station:"
 for station,total_time in station_total_times.iteritems():
