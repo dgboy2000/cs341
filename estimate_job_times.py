@@ -86,8 +86,8 @@ print "Writing data to %s..." %output_file,
 writer = csv.writer(open(output_file, 'w'))
 writer.writerow(out_headers)
 for person,station_part_info in employee_station_part_info.iteritems():
-  for station,part_info in station_part_info:
-    for part,info in part_info:
+  for station,part_info in station_part_info.iteritems():
+    for part,info in part_info.iteritems():
       writer.writerow([person, station, part, info['NumJobs'], info['TotalSecs'], info['TotalSecsSq']])
 print "Done"
 
