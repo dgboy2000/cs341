@@ -24,6 +24,8 @@ except:
 
 cols_to_extract = ['Master Id', 'PartNumber', 'Test Date', 'TestStation', 'EmpName']
 inds_to_extract = [headers.index(col) for col in cols_to_extract]
+emp_ind = headers.index('EmpName')
+date_ind = headers.index('Test Date')
 print "Extracting the following columns from %s:\n%s" %(raw_data_file, "\n".join(cols_to_extract))
 
 csv.field_size_limit(1000000000)
@@ -31,9 +33,12 @@ csv.field_size_limit(1000000000)
 reader = csv.reader(open(raw_data_file))
 num_rows = 0
 num_bogus_rows = 0
+num_dup_rows = 0
 
 writer = csv.writer(open(clean_data_file, 'w'))
 writer.writerow(cols_to_extract)
+
+seen_data = set() # empname:time
 
 for row in reader:
   row_len = len(row)
@@ -41,6 +46,12 @@ for row in reader:
     num_bogus_rows += 1
     continue
     
+  uniq_str = "%s:%s" %(row[emp_ind], row[date_ind])
+  if uniq_str in seen_data:
+    num_dup_rows += 1
+    continue
+  seen_data.add(uniq_str)
+  
   filtered_row = [row[ind] for ind in inds_to_extract]
   writer.writerow(filtered_row)
       
@@ -48,7 +59,7 @@ for row in reader:
   if num_rows % 100000 == 0:
     print "Processed %d rows" %num_rows
   
-print "Read %d rows of data, skipped %d rows" %(num_rows, num_bogus_rows)
+print "Read %d rows of data, skipped %d bogus rows, %d duplicate rows" %(num_rows, num_bogus_rows, num_dup_rows)
 
 
 
